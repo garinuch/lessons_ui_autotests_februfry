@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import static java.time.Duration.ofSeconds;
+import java.util.concurrent.TimeUnit;
 
 public class AddProductToCart {
 
@@ -20,7 +20,7 @@ public class AddProductToCart {
 
         webDriver.get("https://lovisnami.ru/");
         webDriver.manage().window().setSize(new Dimension(1500, 1100));
-        webDriver.manage().timeouts().implicitlyWait(ofSeconds(10));
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         WebElement mayBeCity = webDriver.findElement(By.className("bt_box"));
         mayBeCity.findElement(By.xpath(".//input[1]")).click();

@@ -1,25 +1,24 @@
-package ru.gb.lessons.lesson3;
+package ru.gb.lessons.Lesson5;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-public class AddProductToCart {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    public static void main(String[] args) {
-        String productName = "Электроакустический бас BATON ROUGE X11S/BSCE";
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--blink-settings=imagesEnabled=false");
+public class AddProductTest extends BaseTest {
 
-        WebDriver webDriver = WebDriverManager.chromedriver().capabilities(chromeOptions).create();
+    @ParameterizedTest
+    @ValueSource(strings = {"Электроакустический бас BATON ROUGE X11S/BSCE", "Бас-гитара CORT AB850F BK W_BAG"})
+    void addProductTest(String productName) {
 
         webDriver.get("https://pop-music.ru/");
         webDriver.manage().window().setSize(new Dimension(2000, 1500));
@@ -42,13 +41,12 @@ public class AddProductToCart {
 
         webDriver.findElement(By.xpath("//*[contains(text(),'Перейти в корзину')]")).click();
 
-        System.out.print("Actual products: ");
-        webDriver.findElement(By.className("cart-table"))
+        List<String> actualProductsInCart = webDriver.findElement(By.className("cart-table"))
                 .findElements(By.xpath("./div"))
-                .forEach(product -> System.out.print(product.findElement(By.className("cart-table__name")).getText() + " "));
-        System.out.println();
-        System.out.println("Expected products: " + productName);
+                .stream()
+                .map(product -> product.findElement(By.className("cart-table__name")).getText())
+                .collect(Collectors.toList());
 
-        webDriver.quit();
+        assertThat(actualProductsInCart).containsExactlyInAnyOrder(productName);
     }
 }

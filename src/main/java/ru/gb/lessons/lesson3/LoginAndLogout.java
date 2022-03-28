@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class LoginAndLogout {
     public static void main(String[] args) throws InterruptedException {
@@ -19,13 +19,13 @@ public class LoginAndLogout {
 
         webDriver.get("https://pop-music.ru/");
         webDriver.manage().window().setSize(new Dimension(1500, 1100));
-        webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         webDriver.findElement(By.xpath("//div[@class='header__links']//a[div[text()='Войти']]")).click();
 
         webDriver.get("https://pop-music.ru/");
         webDriver.manage().window().setSize(new Dimension(1500, 1100));
-        webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         webDriver.findElement(By.xpath("//div[@class='header__links']//a[div[text()='Войти']]")).click();
 
@@ -35,10 +35,10 @@ public class LoginAndLogout {
         authPopup.findElement(By.xpath(".//button[span[text()='Войти']]")).click();
         webDriver.findElement(By.cssSelector("div.header__user")).click();
 
-        new WebDriverWait(webDriver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(webDriver.
+        new WebDriverWait(webDriver, 5).until(ExpectedConditions.visibilityOf(webDriver.
                         findElement(By.xpath("//a[text()='Выйти']")))).click();
 
-        new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.
+        new WebDriverWait(webDriver, 5).until(ExpectedConditions.
                 presenceOfElementLocated(By.xpath("//div[@class='header__links']//a[div[text()='Войти']]")));
         webDriver.quit();
     }
